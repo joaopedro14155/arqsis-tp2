@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    volumes:
+      - ./data/cache/:/usr/local/cache
+    expose:
+      - 6379
+    restart: on-failure
+    
+  database:
+    container_name: database
+    image: mongo:latest
+    volumes:
+      - ./data/database/:/usr/local/database
+    expose:
+      - 27017
+    restart: on-failure
+
+  #backend:
+  #  container_name: backend
+  #  build: ./source/backend
+  #  volumes:
+  #    - ./data/backend/:/usr/local/backend
+  #  depends_on:
+  #    - database
+  #    - cache
+  #  links:
+  #    - database
+  #    - cache
+  #  ports:
+  #    - 8080:8080
+  #  restart: on-failure
+
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_DB: yolo
+      POSTGRES_USER: yolo
+      POSTGRES_PASSWORD: yolo
+      PGDATA: /data/postgres
+    volumes:
+      - './data/postgres:/data/postgres'
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+    
+  frontend_app:
+    container_name: frontend_app
+    build:
+        context: ./frontend
+    environment:
+      - SASS_PATH=./node_modules;./src
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    #depends_on:
+    #  - backend
+    #links:
+    #  - backend
+    ports:
+      - 80:80
+    restart: on-failure
