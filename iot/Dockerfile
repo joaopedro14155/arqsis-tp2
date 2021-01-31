@@ -1,15 +1,15 @@
 FROM node:14.9.0
 
-ADD . /user
+ADD . /iot
 
-WORKDIR /user
+WORKDIR /iot
  
-COPY package*.json /user/
+COPY package*.json /iot/
  
 RUN npm install
 RUN npm install -g nodemon 
 
-COPY . /user
+COPY . /iot
 ARG SERVICE_PORT
 EXPOSE ${SERVICE_PORT}
  

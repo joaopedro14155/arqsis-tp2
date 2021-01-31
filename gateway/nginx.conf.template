@@ -1,0 +1,92 @@
+worker_processes 1;
+
+events { worker_connections 1024; }
+
+
+http {
+
+    sendfile on;
+
+    upstream users {
+        server users:${SERVICE_PORT_USERS};
+    }
+
+    upstream parques {
+        server parques:${SERVICE_PORT_PARQUES};
+    }
+
+    upstream iot {
+        server iot:${SERVICE_PORT_IOT};
+    }
+
+    upstream payment {
+        server payment:${SERVICE_PORT_PAYMENT};
+    }
+
+    upstream price {
+        server price:${SERVICE_PORT_PRICE};
+    }
+
+    upstream route {
+        server route:${SERVICE_PORT_ROUTE};
+    }
+
+    server {
+        listen ${SERVICE_PORT} default_server;
+
+        location /users/ {
+            proxy_pass         http://users;
+            proxy_redirect     off;
+            proxy_set_header   Host ${DOLLAR}host;
+            proxy_set_header   X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header   X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host ${DOLLAR}server_name;
+        }
+
+        location /parques/ {
+            proxy_pass         http://parques;
+            proxy_redirect     off;
+            proxy_set_header   Host ${DOLLAR}host;
+            proxy_set_header   X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header   X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host ${DOLLAR}server_name;
+        }
+
+        location /iot/ {
+            proxy_pass         http://iot;
+            proxy_redirect     off;
+            proxy_set_header   Host ${DOLLAR}host;
+            proxy_set_header   X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header   X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host ${DOLLAR}server_name;
+        }
+
+        location /payment/ {
+            proxy_pass         http://payment;
+            proxy_redirect     off;
+            proxy_set_header   Host ${DOLLAR}host;
+            proxy_set_header   X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header   X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host ${DOLLAR}server_name;
+        }
+
+        location /price/ {
+            proxy_pass         http://price;
+            proxy_redirect     off;
+            proxy_set_header   Host ${DOLLAR}host;
+            proxy_set_header   X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header   X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host ${DOLLAR}server_name;
+        }
+
+        location /route/ {
+            proxy_pass         http://route;
+            proxy_redirect     off;
+            proxy_set_header   Host ${DOLLAR}host;
+            proxy_set_header   X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header   X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host ${DOLLAR}server_name;
+        }
+
+    }
+}  

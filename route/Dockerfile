@@ -1,15 +1,15 @@
 FROM node:14.9.0
 
-ADD . /user
+ADD . /route
 
-WORKDIR /user
+WORKDIR /route
  
-COPY package*.json /user/
+COPY package*.json /route/
  
 RUN npm install
 RUN npm install -g nodemon 
 
-COPY . /user
+COPY . /route
 ARG SERVICE_PORT
 EXPOSE ${SERVICE_PORT}
  

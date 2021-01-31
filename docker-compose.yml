@@ -20,6 +20,7 @@ services:
       - 27017
     restart: on-failure
 
+
   users:
     container_name: users
     build:
@@ -35,6 +36,110 @@ services:
     links:
       - database
     restart: on-failure
+
+  parques:
+    container_name: parques
+    build:
+      context: ./parques
+    stdin_open: true
+    volumes:
+      - ./parques:/parques
+      - /parques/node_modules
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_PARQUES}"
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
+
+  iot:
+    container_name: iot
+    build:
+      context: ./iot
+    stdin_open: true
+    volumes:
+      - ./iot:/iot
+      - /iot/node_modules
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_IOT}"
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
+
+  payment:
+    container_name: payment
+    build:
+      context: ./payment
+    stdin_open: true
+    volumes:
+      - ./payment:/payment
+      - /payment/node_modules
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_PAYMENT}"
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
+
+  price:
+    container_name: price
+    build:
+      context: ./price
+    stdin_open: true
+    volumes:
+      - ./price:/price
+      - /price/node_modules
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_PRICE}"
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
+
+  route:
+    container_name: route
+    build:
+      context: ./route
+    stdin_open: true
+    volumes:
+      - ./route:/route
+      - /route/node_modules
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_ROUTE}"
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
+
+
+  gateway:
+    container_name: gateway
+    build:
+      context: ./gateway
+    stdin_open: true
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_GATEWAY}"
+      SERVICE_PORT_USERS: "${SERVICE_PORT_USERS}"
+      SERVICE_PORT_PARQUES: "${SERVICE_PORT_PARQUES}"
+      SERVICE_PORT_IOT: "${SERVICE_PORT_IOT}"
+      SERVICE_PORT_PAYMENT: "${SERVICE_PORT_PAYMENT}"
+      SERVICE_PORT_PRICE: "${SERVICE_PORT_PRICE}"
+      SERVICE_PORT_ROUTE: "${SERVICE_PORT_ROUTE}"
+    ports:
+      - "${SERVICE_PORT_GATEWAY}:${SERVICE_PORT_GATEWAY}"
+    depends_on:
+      - users
+      - parques
+      - iot
+      - payment
+      - price
+      - route
 
   postgres:
     container_name: postgres_container

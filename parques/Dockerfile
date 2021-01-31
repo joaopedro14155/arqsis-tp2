@@ -1,15 +1,15 @@
 FROM node:14.9.0
 
-ADD . /user
+ADD . /parques
 
-WORKDIR /user
+WORKDIR /parques
  
-COPY package*.json /user/
+COPY package*.json /parques/
  
 RUN npm install
 RUN npm install -g nodemon 
 
-COPY . /user
+COPY . /parques
 ARG SERVICE_PORT
 EXPOSE ${SERVICE_PORT}
  
