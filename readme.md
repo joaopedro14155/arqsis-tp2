@@ -3,12 +3,12 @@
 ## RUN 
 
 ```
-docker-compose up -d
+make run
 ```
 
 ## STOP
 ```
-docker-compose kill
+make stop
 ```
 
 

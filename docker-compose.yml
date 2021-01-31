@@ -20,20 +20,21 @@ services:
       - 27017
     restart: on-failure
 
-  #backend:
-  #  container_name: backend
-  #  build: ./source/backend
-  #  volumes:
-  #    - ./data/backend/:/usr/local/backend
-  #  depends_on:
-  #    - database
-  #    - cache
-  #  links:
-  #    - database
-  #    - cache
-  #  ports:
-  #    - 8080:8080
-  #  restart: on-failure
+  users:
+    container_name: users
+    build:
+      context: ./users
+    stdin_open: true
+    volumes:
+      - ./users:/users
+      - /users/node_modules
+    environment:
+      SERVICE_PORT: "${SERVICE_PORT_USERS}"
+    depends_on:
+      - database
+    links:
+      - database
+    restart: on-failure
 
   postgres:
     container_name: postgres_container
@@ -49,20 +50,17 @@ services:
       - "5432:5432"
     restart: unless-stopped
 
-    
+
   frontend_app:
-    container_name: frontend_app
     build:
         context: ./frontend
-    environment:
-      - SASS_PATH=./node_modules;./src
-    volumes:
-      - ./frontend:/frontend
-      - /frontend/node_modules
-    #depends_on:
-    #  - backend
-    #links:
-    #  - backend
-    ports:
-      - 80:80
+    stdin_open: true
     restart: on-failure
+    container_name: frontend
+#    depends_on: 
+#        - backend
+    ports:
+        - "80:80"
+    volumes:
+        - ./frontend:/frontend
+        - /frontend/node_modules
