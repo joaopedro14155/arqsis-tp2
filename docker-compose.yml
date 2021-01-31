@@ -64,3 +64,5 @@ services:
     volumes:
         - ./frontend:/frontend
         - /frontend/node_modules
+    environment:
+        - CHOKIDAR_USEPOLLING=true
