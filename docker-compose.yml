@@ -171,3 +171,4 @@ services:
         - /frontend/node_modules
     environment:
         - CHOKIDAR_USEPOLLING=true
+        - SASS_PATH=./node_modules;./src

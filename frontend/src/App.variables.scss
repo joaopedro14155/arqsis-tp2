@@ -1,0 +1,144 @@
+$base-color: rgb(44, 62, 102);
+$secundary-color: rgb(145,186,166);
+$highlight-color: rgb(254,111,95);
+$normal-color: rgb(63,63,65);
+$border-radius-color: #010101;
+$white: rgb(247,248,243);
+$grey: rgb(168, 168, 168);
+
+
+.alignedCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.horizontal{
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+//Formulário
+.pbForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 500px;
+    margin-bottom: 1em;
+}
+
+.pbInput {
+    margin: 10px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid $base-color;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    padding: 5px;
+}
+
+
+//Botão
+.pbButton {
+    margin: 10px;
+    background-color: $base-color;
+    border: none;
+    font-family: 'Montserrat';
+    font-size: 20px;
+    font-weight: bold;
+    color: $white;
+    padding: 5px;
+}
+
+.pbButton:hover {
+    cursor: pointer;
+    color: $highlight-color;
+}
+
+.pbButton:focus {
+    color: $highlight-color;
+    background-color: $secundary-color;
+    border: 0;
+}
+
+
+
+// Tabelas
+.pbTable {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    margin-bottom: 1em;
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.pbTableHeader {
+    color:$secundary-color;
+    font-style: italic;    
+}
+
+.pbTableHeaderCell {
+    border-bottom: 1px solid $secundary-color;
+    padding: 5px;
+    position:sticky;
+    top:0;
+    background-color: $white;
+}
+
+.pbTableCell {
+    padding: 5px;
+}
+
+.pbTableIcon {
+    width: 12px;
+    padding: 5px;
+}
+
+.pbTableIcon:hover {
+    fill: $highlight-color !important;
+    cursor: pointer;
+}
+
+
+// Modal
+.pbModal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pbModalForm {
+    width: 100%; 
+}
+
+.pbModalContent {
+    width: 500px;
+    background-color: $white;
+}
+
+.pbModalHeader {
+    padding: 10px;
+}
+
+.pbModalBody {
+    padding: 20px 10px;
+    border-top: 1px solid $secundary-color;
+    border-bottom: 1px solid $secundary-color;
+}
+
+.dimSpan span{
+    font-weight: 600;
+    opacity: 0.6;
+    font-size: small;
+}

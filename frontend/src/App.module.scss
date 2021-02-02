@@ -1,0 +1,38 @@
+@import 'App.variables.scss';
+
+.app {
+  text-align: center;
+  background-color: $white;
+  min-height: 100vh;
+  height: 100%;
+  font-family: 'Montserrat';
+}
+
+.body{
+  display: flex;
+  flex-grow: 1;
+  padding: 3em;
+}
+
+.footer{
+  display: flex;
+}
+
+.wapper{
+display: flex;
+justify-content: space-around;
+flex-direction: column;
+min-height: 100vh;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+h4{
+  font-weight: 100;
+}
+
+span{
+  color: $normal-color;
+}

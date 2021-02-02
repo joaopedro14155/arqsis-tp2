@@ -1,0 +1,59 @@
+@import '../../App.variables.scss';
+
+.header {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 90px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: $base-color; 
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    // TEMPORÁRIO
+    font-size: 10px;
+}
+
+.icons {
+    margin-top: 60px;
+    padding: 9px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.appLogo {
+    height: 4.5em;
+}
+
+a {
+    color: $white;
+    text-decoration: none;
+}
+
+a:not(:first-child) {
+    margin-top: 10px;
+}
+
+a:hover {
+    color: $secundary-color
+}
+
+.menuNav{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.loginButton{
+    width:100%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom:40px;
+}
+
+.active{
+    color: $highlight-color;
+}
