@@ -1,29 +1,44 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import classes from './Listing.module.scss'
 import ListingComponent from './ListingComponent.js'
+import apiService from '../../../utils/apiService'
+import { history } from '../../../utils/history.js'
 
 // MOCKS
-const valores = [
-    {
-      precoMinuto: 0.41,
-      tempo: 5,
-      multa: 2,
-    }
-]
+// const valores = [
+//     {
+//       precoMinuto: 0.41,
+//       tempo: 5,
+//       multa: 2,
+//     }
+// ]
 
 const Listing = (props) => {
+
+    const [prices, setPrices] = useState([])
+
+    const [isPick, setIsPick] = useState(false)
+
+    const handleButton = () => {
+        apiService.getPrices(setPrices, isPick)
+    }
+    
+    useEffect(() => {
+        
+      }, [])
+
   return (
     <div className={classes.alignedCenter}>
         <form className={classes.pbForm}>
             <div className={classes.searchInputs}>
-                <input type="radio" id="normal" value="normal" name="tipo"></input>
+                <input type="radio" onClick={setIsPick(1)} id="1" value="1" name="tipo"></input>
                 <label>Zona 1</label>
-                <input type="radio" id="eletrico" value="eletrico" name="tipo"></input>
+                <input type="radio" id="2" value="2" name="tipo"></input>
                 <label>Zona 2</label>
-                <input type="radio" id="deficientes" value="deficientes" name="tipo"></input>
+                <input type="radio" id="3" value="3" name="tipo"></input>
                 <label>Parque 1</label>
             </div>
-            <input className={classes.pbButton} type="submit" value="Mostrar Preços"/>
+            <input className={classes.pbButton} onClick={handleButton()} type="submit" value="Mostrar Preços"/>
         </form>
         <div className={classes.pbTable}>
             <table>
@@ -37,13 +52,13 @@ const Listing = (props) => {
                 </thead>
                 <tbody>
                     {
-                        valores.map((item) => (<ListingComponent data={item} />))
+                        prices.map((item) => (<ListingComponent data={item} />))
                     }
                 </tbody>
             </table>
         </div>
     </div>
-  )
+    )
 }
 
 export default Listing

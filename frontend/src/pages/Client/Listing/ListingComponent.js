@@ -1,6 +1,8 @@
 import React from 'react'
 import classes from './Listing.module.scss'
 
+
+
 const ListingComponent = ({ data }) => {
   return (
     
