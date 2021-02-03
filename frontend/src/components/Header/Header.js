@@ -16,6 +16,7 @@ const Header = (props) => {
         <a href='/client/listing' className={history.location.pathname.includes('/client/listing') ? classes.active : null}>Preçário</a>
         <a href='/client/park' className={history.location.pathname.includes('/client/park') ? classes.active : null}>Parques</a>
         <a href='/client/zone' className={history.location.pathname.includes('/client/zone') ? classes.active : null}>Zonas</a>
+        
         {/* GESTOR */}
         <a href='/manager/listing' className={history.location.pathname.includes('/manager/listing') ? classes.active : null}>Listagem Lugares</a>
         <a href='/manager/history' className={history.location.pathname.includes('/manager/history') ? classes.active : null}>Histórico Lugares</a>

@@ -9,6 +9,7 @@ import Login from './pages/Login/Login.js'
 import ClientYourArea from './pages/Client/YourArea/YourArea.js'
 import ClientSearch from './pages/Client/Search/Search.js'
 import ClientListing from './pages/Client/Listing/Listing.js'
+import ClientPark from './pages/Client/Park/Park.js'
 
 import ManagerListing from './pages/Manager/Listing/Listing.js'
 import ManagerHistory from './pages/Manager/History/History.js'
@@ -44,10 +45,12 @@ class App extends Component {
                 <Route path='/about' component={About} />
                 <Route path='/register' component={Register} />
                 <Route path='/login' component={Login} />
+
                 {/* Páginas para os Clientes */}
                 <Route path='/client/yourarea' component={ClientYourArea} />
                 <Route path='/client/search' component={ClientSearch} />
                 <Route path='/client/listing' component={ClientListing} />
+                <Route path='/client/park' component={ClientPark} />
 
                 {/* Páginas para os Gestores */}
                 <Route path='/manager/listing' component={ManagerListing} />

@@ -9,7 +9,7 @@ const PricingComponent = ({ data }) => {
     <tr>
         <td className={classes.pbTableCell}>{data.precoMinuto}</td>
         <td className={classes.pbTableCell}>{data.tempo}</td>
-        <td className={classes.pbTableCell}> </td>
+        <td className={classes.pbTableCell}></td>
         <td className={classes.pbTableCell}>{data.multa}</td>
         <td>
           <img onClick={() => setShow(true)} className={classes.pbTableIcon} src="/assets/edit.svg"></img> 
