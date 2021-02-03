@@ -4,7 +4,7 @@ info:
   description: " # Introduction\n"
   version: 1.0.0
 servers:
-  - url: 127.0.0.1:8080
+  - url: '127.0.0.1:8080'
     description: ARQSIS API
 paths:
   '/user/create':
@@ -569,6 +569,14 @@ components:
           type: string
           pattern: "[a-zA-Z0-9]+"
           example: "a7h7HFG6hGYRM8534HJBKkjhnjl8534HJBK"
+        type:
+          description: Token
+          type: string
+          enum:
+            - normal 
+            - ticketman
+            - manager
+          example: normal
       type: object
     PriceLine:
       title: PriceLine
@@ -705,8 +713,9 @@ components:
     queryId:
       title: ID
       description: Identification hash
-      type: integer
-      example: 1
+      type: string
+      pattern: "[a-zA-Z0-9]+"
+      example: "12hyhah2131SAdf"
   parameters:
     limit:
       name: limit

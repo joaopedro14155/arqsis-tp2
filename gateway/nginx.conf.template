@@ -38,7 +38,7 @@ http {
     server {
         listen ${SERVICE_PORT} default_server;
 
-        location / {
+        location /doc/ {
             proxy_pass         http://doc;
             proxy_redirect     off;
             proxy_set_header   Host ${DOLLAR}host;
