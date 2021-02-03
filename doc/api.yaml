@@ -1,0 +1,783 @@
+openapi: 3.0.0
+info:
+  title: API - ARQSIS
+  description: " # Introduction\n"
+  version: 1.0.0
+servers:
+  - url: 127.0.0.1:8080
+    description: ARQSIS API
+paths:
+  '/user/create':
+    post:
+      tags:
+        - User
+      summary: Create Users Account
+      description: Returns all Parques
+      operationId: createAccount
+      requestBody:
+        description: User's Info
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+  '/user/login':
+    post:
+      tags:
+        - User
+      summary: Create Users Session
+      description: Returns all Parques
+      operationId: createAccountSession
+      requestBody:
+        description: User's Info
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenSession'
+  '/parques':
+    get:
+      tags:
+        - Parques
+      summary: Get
+      description: Returns all Parques
+      operationId: getAllParques
+      parameters:
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: ParquesCollection
+                description: Collection of Parques
+                properties:
+                  total_items:
+                    description: Returned Parques
+                    type: integer
+                    minimum: 0
+                    example: 1
+                  items:
+                    description: Returned Parques
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Parque'
+                type: object
+  '/prices':
+    get:
+      tags:
+        - Prices
+      summary: Get
+      description: Returns all Prices
+      operationId: getAllPrices
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: ParquesCollection
+                description: Collection of Parques
+                properties:
+                  items:
+                    description: Returned Parques
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PriceTableArray'
+                type: object
+  '/parques/search':
+    get:
+      tags:
+        - Parques
+      summary: Search for Parques based on parameters
+      description: Parques an Image
+      operationId: searchParque
+      parameters:
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/zone_id'
+        - $ref: '#/components/parameters/street'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parque'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+      security:
+        - Apikey: []
+  '/parques/check-in':
+    get:
+      tags:
+        - Parques
+      summary:  Gets checked in places for user
+      description: gets checked in places for user
+      operationId: checkedinParque
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: ParquesCollection
+                description: Collection of Parques
+                properties:
+                  items:
+                    description: Returned Parques
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Parque'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+      security:
+        - Apikey: []
+  '/parques/check-in/zones/{zone_id_path}/parques/{parque_id_path}':
+    post:
+      tags:
+        - Parques
+      summary:  Request
+      description: gets checked in places for user
+      operationId: checkinParque
+      parameters:
+        - $ref: '#/components/parameters/zone_id_path'
+        - $ref: '#/components/parameters/parque_id_path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+      security:
+        - Apikey: []
+  '/payment/checkout/zones/{zone_id_path}/parques/{parque_id_path}':
+    post:
+      tags:
+        - Payment
+      summary:  Request a payment
+      description: pays a check-id for user
+      operationId: checkoutParque
+      parameters:
+        - $ref: '#/components/parameters/zone_id_path'
+        - $ref: '#/components/parameters/parque_id_path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+      security:
+        - Apikey: []
+  '/manager/price':
+    put:
+      tags:
+        - Manager
+      summary: Manager price table
+      description: Manager
+      operationId: putManagerPrice
+      requestBody:
+        description: TablePrices
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceTableArray'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+      security:
+        - Apikey: []
+  '/manager/zones':
+    put:
+      tags:
+        - Manager
+      summary: Manager zones
+      description: Manager
+      operationId: putManagerZones
+      requestBody:
+        description: Zones
+        required: true
+        content:
+          application/json:
+            schema:
+              items:
+                description: Returned Zones
+                type: array
+                items:
+                  $ref: '#/components/schemas/Zone'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+      security:
+        - Apikey: []
+  '/manager/zones/{zone_id_path}':
+    delete:
+      tags:
+        - Manager
+      summary: Manager zones delete
+      description: Manager
+      operationId: deleteManagerZone
+      parameters:
+        - $ref: '#/components/parameters/zone_id_path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+      security:
+        - Apikey: []
+  '/manager/zones/{zone_id_path}/parques':
+    put:
+      tags:
+        - Manager
+      summary: Manager parques
+      description: Manager
+      operationId: putManagerParques
+      parameters:
+        - $ref: '#/components/parameters/zone_id_path'
+      requestBody:
+        description: Parques
+        required: true
+        content:
+          application/json:
+            schema:
+              items:
+                description: Returned Parques
+                type: array
+                items:
+                  $ref: '#/components/schemas/Parque'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized' 
+      security:
+        - Apikey: []
+        
+  '/manager/payment/history':
+    get:
+      tags:
+        - Manager
+      summary: Manager history
+      description: Manager
+      operationId: getManagerPaymentHistory
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  description: Returned Parques
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ParqueHistory'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized' 
+      security:
+        - Apikey: []  
+  '/manager/ticket/history':
+    get:
+      tags:
+        - Manager
+      summary: Manager ticket history
+      description: Manager
+      operationId: getManagerTicketHistory
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  description: Returned tickets
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TicketHistory'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized' 
+      security:
+        - Apikey: []  
+  '/ticketman/zones/{zone_id_path}/parques/{parque_id_path}':
+    post:
+      tags:
+        - TicketMan
+      summary: TicketMan parques
+      description: TicketMan send new ticket
+      operationId: postNetTicket
+      parameters:
+        - $ref: '#/components/parameters/zone_id_path'
+        - $ref: '#/components/parameters/parque_id_path'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized' 
+      security:
+        - Apikey: []
+
+components:
+  schemas:
+    Ticket:
+      title: Ticket
+      properties:
+        parque_id:
+          $ref: '#/components/schemas/queryId'
+        loc:
+          description: Parque's localization ISO 6709
+          type: string
+          example: "41.53716582637774, -8.627602255373887"
+        type:
+          description: Parque's type
+          type: string
+          enum:
+            - normal
+            - charger
+            - disabled
+          example: normal
+        occupied:
+          description: Parque's occupation state
+          type: boolean
+          example: false
+        street:
+          description: Parque's street
+          type: string
+          example: "Lugar do Aldão"
+        zone_id:
+          description: Parque's Zone
+          type: integer
+          example: 1
+          readOnly: true
+      type: object
+    Parque:
+      title: Parque
+      properties:
+        parque_id:
+          $ref: '#/components/schemas/queryId'
+        loc:
+          description: Parque's localization ISO 6709
+          type: string
+          example: "41.53716582637774, -8.627602255373887"
+        type:
+          description: Parque's type
+          type: string
+          enum:
+            - normal
+            - charger
+            - disabled
+          example: normal
+        occupied:
+          description: Parque's occupation state
+          type: boolean
+          example: false
+        street:
+          description: Parque's street
+          type: string
+          example: "Lugar do Aldão"
+        zone_id:
+          description: Parque's Zone
+          type: integer
+          example: 1
+          readOnly: true
+      type: object
+    ParqueHistory:
+      title: ParqueHistory
+      properties:
+        transaction_id:
+          $ref: '#/components/schemas/queryId'
+        parque_id:
+          $ref: '#/components/schemas/queryId'
+        start:
+          description: Parque's start
+          type: string
+          example: "2021-02-01T18:06:08-07:00"
+        end:
+          description: Parque's end
+          type: string
+          example: "2021-02-01T18:06:08-07:00"
+        total: 
+          description: paid price in €
+          type: number
+          example: 1.2
+      type: object
+    TicketHistory:
+      title: TicketHistory
+      properties:
+        ticket_id:
+          $ref: '#/components/schemas/queryId'
+        zone_id:
+          $ref: '#/components/schemas/queryId'
+        parque_id:
+          $ref: '#/components/schemas/queryId'
+        user: 
+          description: user's email
+          type: string
+          example: "user@example.com"
+        total: 
+          description: paid price in €
+          type: number
+          example: 90
+      type: object
+    User:
+      title: User
+      properties:
+        email:
+          description: User's Email
+          type: string
+          example: "user@example.com"
+        password:
+          description: User's Password
+          type: string
+          example: "****"
+      type: object
+    Zone:
+      title: Zone
+      properties:
+        zone_id:
+          $ref: '#/components/schemas/queryId'
+        ticket_price:
+          description: Ticket's Price in €
+          type: number
+          example: 90
+      type: object
+    TokenSession:
+      title: TokenSession
+      properties:
+        token:
+          description: Token
+          type: string
+          pattern: "[a-zA-Z0-9]+"
+          example: "a7h7HFG6hGYRM8534HJBKkjhnjl8534HJBK"
+      type: object
+    PriceLine:
+      title: PriceLine
+      properties:
+        price_minute:
+          description: Price per minute
+          type: number
+          example: 0.1
+        minutes:
+          description: Number of minutes
+          type: integer
+          example: 5
+        total:
+          description: Total price in € (euros)
+          type: number
+          example: 20
+          readOnly: true
+      type: object
+    PriceTable:
+      title: PriceTable
+      properties:
+        zone_id:
+          description: zone_id
+          type: integer
+          example: 1
+        prices:
+            description: Returned PriceLines
+            type: array
+            items:
+              $ref: '#/components/schemas/PriceLine'
+      type: object
+    PriceTableArray:
+      title: PriceTableArray
+      properties:
+        tables:
+            description: Returned PriceTables
+            type: array
+            items:
+              $ref: '#/components/schemas/PriceTable'
+      type: object
+    ActionResponse:
+      title: ActionResponse
+      properties:
+        type:
+          description: ActionResponse's type
+          type: string
+          enum:
+            - success
+          example: success
+    Unauthorized:
+      title: Unauthorized
+      properties:
+        type:
+          description: RFC for status code definitions
+          type: string
+          example: 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html'
+        title:
+          description: Error title
+          type: string
+          enum:
+            - Unauthorized
+        status:
+          description: Status code
+          type: integer
+          example: 401
+        detail:
+          description: Error detail
+          type: string
+          example: The request has not been applied because it lacks valid authentication credentials for the target resource
+      type: object
+    Conflict:
+      title: Conflict
+      properties:
+        type:
+          description: RFC for status code definitions
+          type: string
+          example: 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html'
+        title:
+          description: Error title
+          type: string
+          enum:
+            - Conflict
+        status:
+          description: Status code
+          type: integer
+          example: 409
+        detail:
+          description: Error detail
+          type: string
+          example: The request could not be completed due to a conflict with the current state of the resource
+      type: object
+    Forbidden:
+      title: Forbidden
+      properties:
+        type:
+          description: RFC for status code definitions
+          type: string
+          example: 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html'
+        title:
+          description: Error title
+          type: string
+          enum:
+            - Forbidden
+        status:
+          description: Status code
+          type: integer
+          example: 403
+        detail:
+          description: Error detail
+          type: string
+          example: The server understood the request but refuses to authorize it.
+      type: object
+    NotFound:
+      title: Not Found
+      properties:
+        type:
+          description: RFC for status code definitions
+          type: string
+          example: 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html'
+        title:
+          description: Error title
+          type: string
+          enum:
+            - NotFound
+        status:
+          description: Status code
+          type: integer
+          example: 404
+        detail:
+          description: Error detail
+          type: string
+          example: The origin server did not find a current representation for the target resource or is not willing to disclose that one exists
+      type: object
+    queryId:
+      title: ID
+      description: Identification hash
+      type: integer
+      example: 1
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of items to return
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: integer
+        default: 10
+        maximum: 100
+        minimum: 1
+    offset:
+      name: offset
+      in: query
+      description: Element offset (starting at zero for the first element)
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: integer
+        minimum: 0
+        default: '0'
+    zone_id:
+      name: zone_id
+      in: query
+      description: Id of a zone
+      required: false
+      allowEmptyValue: false
+      schema:
+        $ref: '#/components/schemas/queryId'
+    zone_id_path:
+      name: zone_id_path
+      in: path
+      description: Id of a zone
+      required: true
+      allowEmptyValue: false
+      schema:
+        $ref: '#/components/schemas/queryId'
+    parque_id:
+      name: parque_id
+      in: query
+      description: Id of a parque
+      required: false
+      allowEmptyValue: false
+      schema:
+        $ref: '#/components/schemas/queryId'
+    parque_id_path:
+      name: parque_id_path
+      in: path
+      description: Id of a parque
+      required: true
+      allowEmptyValue: false
+      schema:
+        $ref: '#/components/schemas/queryId'
+    street:
+      name: street
+      in: query
+      description: Parque's Street
+      required: false
+      allowEmptyValue: false
+      schema:
+        type: string
+        example: "Lugar do Aldão"
+  securitySchemes:
+    Apikey:
+      type: apiKey
+      name: Apikey
+      in: header
+x-tagGroups:
+  - name: Api Methods
+    tags:
+      - Images
+      - CrossPoint
+      - Monitoring
