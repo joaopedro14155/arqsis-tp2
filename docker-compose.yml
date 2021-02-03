@@ -131,6 +131,7 @@ services:
       SERVICE_PORT_PAYMENT: "${SERVICE_PORT_PAYMENT}"
       SERVICE_PORT_PRICE: "${SERVICE_PORT_PRICE}"
       SERVICE_PORT_ROUTE: "${SERVICE_PORT_ROUTE}"
+      SERVICE_PORT_DOC: "${SERVICE_PORT_DOC}"
     ports:
       - "${SERVICE_PORT_GATEWAY}:${SERVICE_PORT_GATEWAY}"
     depends_on:
@@ -140,21 +141,39 @@ services:
       - payment
       - price
       - route
+      - doc
 
   postgres:
-    container_name: postgres_container
-    image: postgres
+    container_name: postgis
+    image: kartoza/postgis
     environment:
-      POSTGRES_DB: yolo
-      POSTGRES_USER: yolo
-      POSTGRES_PASSWORD: yolo
-      PGDATA: /data/postgres
+      POSTGRES_DBNAME: artsis
+      POSTGRES_USER: artsis
+      POSTGRES_PASS: artsis
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis,hstore,postgis_topology,postgis_raster,pgrouting
     volumes:
-      - './data/postgres:/data/postgres'
+      - './data/postgres:/var/lib/postgresql'
+    restart: unless-stopped
     ports:
       - "5432:5432"
-    restart: unless-stopped
 
+  geoserver:
+    image: geonode/geoserver
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./data/geoserver/data:/geoserver_data/data
+    depends_on:
+      - postgres
+
+  doc:
+    container_name: doc
+    image: swaggerapi/swagger-ui
+    volumes:
+      - ./doc:/usr/share/nginx/html/swagger
+    environment:
+      API_URL: swagger/api.yaml
+      BASE_URL: /doc
 
   frontend_app:
     build:
@@ -170,5 +189,6 @@ services:
         - ./frontend:/frontend
         - /frontend/node_modules
     environment:
-        - CHOKIDAR_USEPOLLING=true
-        - SASS_PATH=./node_modules;./src
+      - CHOKIDAR_USEPOLLING=true
+	    - SASS_PATH=./node_modules;./src
+      
